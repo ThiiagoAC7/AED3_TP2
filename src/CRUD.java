@@ -5,8 +5,9 @@ public class CRUD<T extends Registro> {
 
 	private RandomAccessFile arq;
 	private Constructor<T> construtor;
-	private final String nomeArquivo = "pacientes.db";
 	private Hash<bucketPaciente> hashExt;
+	private final String nomeArquivo = "pacientes.db";
+	private final char DELETADO = '*';
 
 	/**
 	 * Construtor do CRUD
@@ -80,17 +81,20 @@ public class CRUD<T extends Registro> {
 			arq.seek(4);
 			// pular cabecalho
 
+			bucketPaciente bPaciente = hashExt.read(id);
+			long pos = bPaciente.getEnd();
 			byte lapide;
 			byte[] b;
 			int tam;
 			T objeto;
 
-			while (arq.getFilePointer() != arq.length()) {
+			if (pos != -1) {
+				arq.seek(pos);
 				lapide = arq.readByte();
 				tam = arq.readInt();
 				b = new byte[tam];
 				arq.read(b);
-				if (lapide != '*') {
+				if (lapide != DELETADO) {
 					objeto = this.construtor.newInstance();
 					objeto.fromByteArray(b);
 					if (objeto.getID() == id) {
@@ -115,37 +119,43 @@ public class CRUD<T extends Registro> {
 		try {
 			/** TRY */
 			arq.seek(4);
-			long pos;
+
+			bucketPaciente bPaciente = hashExt.read(novoObjeto.getID());
+			long pos = bPaciente.getEnd();
 			byte lapide;
 			byte[] b;
 			byte[] novoB;
 			int tam;
 			T objeto;
 
-			while (arq.getFilePointer() < arq.length()) {
-				pos = arq.getFilePointer();
+			if (pos != -1){
+
+				arq.seek(pos);
 				lapide = arq.readByte();
 				tam = arq.readInt();
 				b = new byte[tam];
 				arq.read(b);
-				if (lapide != '*') {
+				
+				if (lapide != DELETADO) {
 					objeto = this.construtor.newInstance();
 					objeto.fromByteArray(b);
-					if (objeto.getID() == novoObjeto.getID()) {
-						novoB = novoObjeto.toByteArray();
-						if (novoB.length < tam) {
-							arq.seek(pos + 5);
-							arq.write(novoB);
-						} else {
-							arq.seek(pos);
-							arq.writeByte('*');
-							arq.seek(arq.length());
-							arq.writeByte(' ');
-							arq.writeInt(novoB.length);
-							arq.write(novoB);
-						}
-						return true;
+					novoB = novoObjeto.toByteArray();
+					if (novoB.length <= b.length) {
+						arq.seek(pos);
+						arq.writeByte(' ');
+						arq.writeInt(tam);
+						arq.write(novoB);
+					} else {
+						arq.seek(pos);
+						arq.writeByte(DELETADO);
+						arq.seek(arq.length());
+						pos = arq.getFilePointer();
+						arq.writeByte(' ');
+						arq.writeInt(novoB.length);
+						arq.write(novoB);
+						hashExt.update( new bucketPaciente(novoObjeto.getID(),pos) );
 					}
+					return true;
 				}
 			}
 
@@ -167,28 +177,26 @@ public class CRUD<T extends Registro> {
 			arq.seek(4);
 			// pular cabecalho
 
-			long pos;
+			bucketPaciente bPaciente = hashExt.read(id);
+			long pos = bPaciente.getEnd();
 			byte lapide;
 			int tam;
 			byte[] b;
 			T objeto;
 
-			while (arq.getFilePointer() < arq.length()) {
-				pos = arq.getFilePointer();
+			if (pos != -1){
+				arq.seek(pos);
 				lapide = arq.readByte();
 				tam = arq.readInt();
 				b = new byte[tam];
-				arq.read(b);
-				if (lapide != '*') {
+				if (lapide != DELETADO){
 					objeto = this.construtor.newInstance();
 					objeto.fromByteArray(b);
-					if (objeto.getID() == id) {
-						arq.seek(pos);
-						arq.writeByte('*');
-						return true;
-					}
+					arq.seek(pos);
+					arq.writeByte(DELETADO);
+					hashExt.delete(id);
+					return true;
 				}
-
 			}
 
 			/** FIM TRY */

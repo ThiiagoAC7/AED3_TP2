@@ -1,5 +1,0 @@
-FALTA FAZER :
-
-. Funções CRUD no Hash.java
-. Adaptar CRUD.java para o Hash Extensivel (read, update, delete);
-. documento abnt

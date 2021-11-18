@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.lang.reflect.Constructor;
-import java.io.RandomAccessFile;
 
 public class Hash<T extends RegistroHash<T>> {
 
@@ -365,9 +364,76 @@ public class Hash<T extends RegistroHash<T>> {
      * @param objeto Objeto a ser criado
      * @return true caso for criado
      */
-    public boolean create(T objeto){
-        // ...
-        return true;
+    public boolean create(T objeto) throws Exception{
+        
+        // Carrega o diretório
+        byte[] bd = new byte[(int) arqDir.length()];
+        arqDir.seek(0);
+        arqDir.read(bd);
+        dir = new Diretorio();
+        dir.fromByteArray(bd);
+
+        // Identifica a hash do diretório,
+        int i = dir.hash(objeto.hashCode());
+
+        // Recupera o cesto
+        long endBucket = dir.endereco(i);
+        Bucket bucket = new Bucket(construtor, numMaxBucket,0);
+        byte[] ba = new byte[bucket.size()];
+        arqBucket.seek(endBucket);
+        arqBucket.read(ba);
+        bucket.fromByteArray(ba);
+
+        // Testa se a chave já não existe no cesto
+        if (bucket.read(objeto.hashCode()) != null) throw new Exception("Objeto já existe");
+
+        // Testa se o cesto já não está cheio
+        // Se não estiver, create o par de chave e dado
+        if (!bucket.full()) {
+            // Insere a chave no cesto e o atualiza
+            bucket.create(objeto);
+            arqBucket.seek(endBucket);
+            arqBucket.write(bucket.toByteArray());
+            return true;
+        }
+
+        // Duplica o diretório
+        byte pl = bucket.profundidadeLocal;
+        if (pl >= dir.profundidadeGlobal)
+        dir.duplica();
+        byte pg = dir.profundidadeGlobal;
+
+        // Cria os novos cestos, com os seus dados no arquivo de cestos
+        Bucket c1 = new Bucket(construtor, numMaxBucket, pl + 1);
+        arqBucket.seek(endBucket);
+        arqBucket.write(c1.toByteArray());
+
+        Bucket c2 = new Bucket(construtor, numMaxBucket, pl + 1);
+        long novoEndBucket = arqBucket.length();
+        arqBucket.seek(novoEndBucket);
+        arqBucket.write(c2.toByteArray());
+
+        // Atualiza os dados no diretório
+        int inicio = dir.hash2(objeto.hashCode(), bucket.profundidadeLocal);
+        int deslocamento = (int) Math.pow(2, pl);
+        int max = (int) Math.pow(2, pg);
+        boolean troca = false;
+        for (int j = inicio; j < max; j += deslocamento) {
+            if (troca) dir.atualizaEnd(j, novoEndBucket);
+            troca = !troca;
+        }
+
+        // Atualiza o arquivo do diretório
+        bd = dir.toByteArray();
+        arqDir.seek(0);
+        arqDir.write(bd);
+
+        // Reinsere as chaves
+        for (int j = 0; j < bucket.numObjetos; j++) {
+            create(bucket.objetoArray.get(j));
+        }
+        create(objeto);
+        return false;
     }
         
     /**
@@ -375,9 +441,24 @@ public class Hash<T extends RegistroHash<T>> {
      * @param chave Id do objeto a ser lido
      * @return Objeto lido
      */
-    public T read(int chave){
-        // ...
-        return null;
+    public T read(int chave) throws Exception{
+
+        byte[] b = new byte[ (int) arqDir.length() ];
+        arqDir.seek(0);
+        arqDir.read(b);
+        dir = new Diretorio();
+        dir.fromByteArray(b);
+
+        int i = dir.hash(chave);
+
+        long endBucket = dir.endereco(i);
+        Bucket bucket = new Bucket(construtor, numMaxBucket, 0);
+        byte[] ba = new byte[bucket.size()]; 
+        arqBucket.seek(endBucket);
+        arqBucket.read(ba);
+        bucket.fromByteArray(ba);
+        
+        return bucket.read(chave);
     }
 
     /**
@@ -385,8 +466,28 @@ public class Hash<T extends RegistroHash<T>> {
      * @param objeto Novo objeto    
      * @return true caso for atualizado
      */
-    public boolean update(T objeto){
-        // ...
+    public boolean update(T objeto) throws Exception{
+
+        byte[] bd = new byte[(int) arqDir.length()];
+        arqDir.seek(0);
+        arqDir.read(bd);
+        dir = new Diretorio();
+        dir.fromByteArray(bd);
+
+    
+        int i = dir.hash(objeto.hashCode());
+
+        long endBucket = dir.endereco(i);
+        Bucket bucket = new Bucket(construtor, numMaxBucket,0);
+        byte[] ba = new byte[bucket.size()];
+        arqBucket.seek(endBucket);
+        arqBucket.read(ba);
+        bucket.fromByteArray(ba);
+
+        if (!bucket.update(objeto)) return false;
+
+        arqBucket.seek(endBucket);
+        arqBucket.write(bucket.toByteArray());
         return true;
     }
 
@@ -395,8 +496,28 @@ public class Hash<T extends RegistroHash<T>> {
      * @param chave Id do objeto a ser deletado
      * @return true caso for deletado
      */
-    public boolean delete(int chave){
-        // ...
+    public boolean delete(int chave) throws Exception{
+
+        byte[] bd = new byte[(int) arqDir.length()];
+        arqDir.seek(0);
+        arqDir.read(bd);
+        dir = new Diretorio();
+        dir.fromByteArray(bd);
+
+        int i = dir.hash(chave);
+
+        long endBucket = dir.endereco(i);
+        Bucket bucket = new Bucket(construtor, numMaxBucket,0);
+        byte[] ba = new byte[bucket.size()];
+        arqBucket.seek(endBucket);
+        arqBucket.read(ba);
+        bucket.fromByteArray(ba);
+
+        if (!bucket.delete(chave))
+        return false;
+
+        arqBucket.seek(endBucket);
+        arqBucket.write(bucket.toByteArray());
         return true;
     }
 }
