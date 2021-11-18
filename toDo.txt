@@ -3,3 +3,5 @@ Falta Fazer :
 - medição de tempo a cada operação de CRUD (sem interação com usuario)
   - printar na tela
 - implementar impressão do Diretorio, Bucket e Arquivo Mestre
+- Deve ser perguntado ao usuario p (profundidade global), n (número de entradas por bucket) e m (tamanho adicional do registro). 
+  
