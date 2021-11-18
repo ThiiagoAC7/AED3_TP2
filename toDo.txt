@@ -1,0 +1,5 @@
+Falta Fazer : 
+- main 
+- medição de tempo a cada operação de CRUD (sem interação com usuario)
+  - printar na tela
+- implementar impressão do Diretorio, Bucket e Arquivo Mestre
