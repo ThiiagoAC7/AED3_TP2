@@ -14,10 +14,10 @@ public class Main{
             int menu;
 
             do{
-                System.out.println("\n1- Inserir Cliente");
-                System.out.println("2- Imprimir Cliente");
-                System.out.println("3- Atualizar Cliente");
-                System.out.println("4- Deletar Cliente");
+                System.out.println("\n1- Inserir Ficha de Paciente");
+                System.out.println("2- Imprimir Ficha de Paciente");
+                System.out.println("3- Atualizar Ficha de Paciente");
+                System.out.println("4- Deletar Ficha de Paciente");
                 System.out.println("5- Imprimir Arquivos");
                 System.out.println("0- Sair\n");
                 System.out.print("Opção: ");
@@ -62,12 +62,12 @@ public class Main{
 
                         //inicia medidor de tempo
                         long inicioCreate = dateUtil.now();
-                        //função inserir do CRUD passando o novo cliente como parâmetro
+                        //função inserir do CRUD passando o novo paciente como parâmetro
                         crud.create(p1);
                         //finaliza medidor de tempo
                         long fimCreate = dateUtil.now();
                         //imprime tempo de execução do crud.create()
-                        System.out.println("Tempo de Execução: " + (fimCreate-inicioCreate)/1000 + "segundos");
+                        System.out.println("Tempo de Execução: " + (fimCreate-inicioCreate) + " ms");
 
                         break;
                     //Imprimir
@@ -77,8 +77,14 @@ public class Main{
                         int id2 = in.nextInt();
                         System.out.print("\n");
 
+                        //inicia medidor de tempo
+                        long inicioRead = dateUtil.now();
                         //função imprimir do CRUD
                         Paciente p2 = crud.read(id2);
+                        //finaliza medidor de tempo
+                        long fimRead = dateUtil.now();
+                        //imprime tempo de execução do crud.read()
+                        System.out.println("Tempo de Execução: " + (fimRead-inicioRead) + " ms");
 
                         if(p2 != null) {
                             //imprime informações do paciente na tela
@@ -126,8 +132,16 @@ public class Main{
                         //cria objeto paciente
                         Paciente p3 = new Paciente(id3, nome3, dataDeNascimento3, sexo3, anotacoes3);
 
+                        
+
+                        //inicia medidor de tempo
+                        long inicioUpdate = dateUtil.now();
                         //função atualizar CRUD passando o novo paciente como parâmetro
                         crud.update(p3);
+                        //finaliza medidor de tempo
+                        long fimUpdate = dateUtil.now();
+                        //imprime tempo de execução do crud.update()
+                        System.out.println("Tempo de Execução: " + (fimUpdate-inicioUpdate) + " ms");
 
                         break;
                     //Deletar
@@ -136,9 +150,15 @@ public class Main{
                         System.out.print("ID: ");
                         int id4 = in.nextInt();
                         System.out.print("\n");
-
+                        
+                        //inicia medidor de tempo
+                        long inicioDelete = dateUtil.now();
                         //função delete CRUD
                         boolean deletado = crud.delete(id4);
+                        //finaliza medidor de tempo
+                        long fimDelete = dateUtil.now();
+                        //imprime tempo de execução do crud.delete()
+                        System.out.println("Tempo de Execução: " + (fimDelete-inicioDelete) + " ms");
 
                         if(deletado) {
                             System.out.println("Paciente deletado com sucesso!");
