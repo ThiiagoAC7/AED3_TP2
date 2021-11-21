@@ -43,7 +43,7 @@ public class Main{
                         char sexo1 = in.nextLine().charAt(0);
                         System.out.print("\n");
                         //ler anotações
-                        System.out.print("Anotações.......:");
+                        System.out.print("Anotações.......: ");
                         String anotacoes1 = in.nextLine();
                         System.out.println("\n");
 
@@ -94,7 +94,7 @@ public class Main{
                         char sexo3 = in.nextLine().charAt(0);
                         System.out.print("\n");
                         //ler anotações
-                        System.out.print("Anotações.......:");
+                        System.out.print("Anotações.......: ");
                         String anotacoes3 = in.nextLine();
                         System.out.println("\n");
 
