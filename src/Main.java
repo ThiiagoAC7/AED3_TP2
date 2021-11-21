@@ -90,7 +90,7 @@ public class Main{
                         Date dataDeNascimento3 = dateUtil.stringToDate(strData3);
                         System.out.print("\n");
                         //ler sexo
-                        System.out.print("Sexo............: ");
+                        System.out.print("Sexo(M/F).......: ");
                         char sexo3 = in.nextLine().charAt(0);
                         System.out.print("\n");
                         //ler anotações
