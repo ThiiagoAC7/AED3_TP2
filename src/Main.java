@@ -39,7 +39,7 @@ public class Main{
                         Date dataDeNascimento1 = dateUtil.stringToDate(strData1);
                         System.out.print("\n");
                         //ler sexo
-                        System.out.print("Sexo............: ");
+                        System.out.print("Sexo(M/F).......: ");
                         char sexo1 = in.nextLine().charAt(0);
                         System.out.print("\n");
                         //ler anotações
