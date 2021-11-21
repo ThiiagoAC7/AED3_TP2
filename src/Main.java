@@ -59,9 +59,15 @@ public class Main{
 
                         //cria objeto paciente
                         Paciente p1 = new Paciente(-1, nome1, dataDeNascimento1, sexo1, anotacoes1);
-                        
+
+                        //inicia medidor de tempo
+                        long inicioCreate = dateUtil.now();
                         //função inserir do CRUD passando o novo cliente como parâmetro
                         crud.create(p1);
+                        //finaliza medidor de tempo
+                        long fimCreate = dateUtil.now();
+                        //imprime tempo de execução do crud.create()
+                        System.out.println("Tempo de Execução: " + (fimCreate-inicioCreate)/1000 + "segundos");
 
                         break;
                     //Imprimir

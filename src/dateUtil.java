@@ -46,6 +46,10 @@ class dateUtil {
         catch(ParseException e){
              return false;
         }
-   }
+    }
+
+    public static long now() {
+        return new Date().getTime();
+    }
 
 }
