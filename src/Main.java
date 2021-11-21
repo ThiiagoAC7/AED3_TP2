@@ -35,18 +35,18 @@ public class Main{
                         System.out.print("\n");
                         //ler data de nascimento
                         String strData1;
-                        boolean formatado = false;
+                        boolean formatado1 = false;
                         Date dataDeNascimento1 = new Date();
                         do{
                             System.out.print("DataDeNascimento: ");
                             strData1 = in.nextLine();
-                            formatado = dateUtil.validaData(strData1);
-                            if(formatado==true) {
+                            formatado1 = dateUtil.validaData(strData1);
+                            if(formatado1==true) {
                                 dataDeNascimento1 = dateUtil.stringToDate(strData1);
                             } else {
                                 System.out.println("Data Inválida!!!");
                             }                   
-                        } while(formatado==false);
+                        } while(formatado1==false);
                         System.out.print("\n");
                         //ler sexo
                         System.out.print("Sexo(M/F).......: ");
@@ -95,10 +95,19 @@ public class Main{
                         String nome3 = in.nextLine();
                         System.out.print("\n");
                         //ler data de nascimento
-                        System.out.print("DataDeNascimento: ");
-                        String strData3 = in.nextLine();
-                        Date dataDeNascimento3 = dateUtil.stringToDate(strData3);
-                        System.out.print("\n");
+                        String strData3;
+                        boolean formatado3 = false;
+                        Date dataDeNascimento3 = new Date();
+                        do{
+                            System.out.print("DataDeNascimento: ");
+                            strData3 = in.nextLine();
+                            formatado3 = dateUtil.validaData(strData3);
+                            if(formatado3==true) {
+                                dataDeNascimento3 = dateUtil.stringToDate(strData3);
+                            } else {
+                                System.out.println("Data Inválida!!!");
+                            }                   
+                        } while(formatado3==false);
                         //ler sexo
                         System.out.print("Sexo(M/F).......: ");
                         char sexo3 = in.nextLine().charAt(0);
