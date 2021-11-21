@@ -206,4 +206,33 @@ public class CRUD<T extends Registro> {
 		return false;
 	}
 
+	/** 
+     * Imprime todos Clientes do arquivo
+     */
+    public void readAll() throws Exception {
+        arq.seek(4);
+        //pular cabeçalho
+
+        byte lapide;
+        byte[] b;
+        int tam;
+        Paciente objeto;
+        while(arq.getFilePointer() < arq.length()) {
+            lapide = arq.readByte();
+            tam = arq.readInt();
+            b = new byte[tam];
+            arq.read(b);
+            if(lapide != DELETADO) {
+                objeto = new Paciente();
+                objeto.fromByteArray(b);
+                System.out.println(objeto.toString());
+            }
+        }
+
+    }
+
+	public void imprimir(){
+		hashExt.imprimir();
+	}
+
 }

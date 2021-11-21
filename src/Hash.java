@@ -194,6 +194,10 @@ public class Hash<T extends RegistroHash<T>> {
         public int size() {
             return bytesBucket;
         }
+        
+        public String imprimir(long pos){
+            return objetoArray.get((int)pos).toString();
+        }
 
     }
     /** FIM CLASSE BUCKET */
@@ -318,6 +322,15 @@ public class Hash<T extends RegistroHash<T>> {
          */
         public int hash2(int chave, int profundidadeLocal){
             return (Math.abs(chave) % ((int) Math.pow(2, profundidadeLocal)));
+        }
+
+        public String impirimir(){
+            String dadaosDir = " | "; 
+            for (int i=0;i<endArray.length;i++){
+                dadaosDir += endArray[i] + " | ";
+            }
+
+            return dadaosDir;
         }
 
     }
@@ -519,5 +532,38 @@ public class Hash<T extends RegistroHash<T>> {
         arqBucket.seek(endBucket);
         arqBucket.write(bucket.toByteArray());
         return true;
+    }
+
+    /**
+     * Imprime na tela o conteúdo atual do Hash Extensível
+     */
+    public void imprimir(){
+        try {
+            byte[] bd = new byte[(int) arqDir.length()];
+            arqDir.seek(0);
+            arqDir.read(bd);
+            dir = new Diretorio();
+            dir.fromByteArray(bd);
+            System.out.println("\nDIRETÓRIO :");
+            System.out.println(dir.impirimir());
+
+            System.out.println("\nBuckets :");
+            arqBucket.seek(0);
+
+            long pos = 0;
+
+            while (arqBucket.getFilePointer() != arqBucket.length()) {
+                pos = arqBucket.getFilePointer();
+                System.out.println("Endereço: "+ pos);
+
+                Bucket bucket = new Bucket(construtor, numMaxBucket,0);
+                byte[] ba = new byte[bucket.size()];
+                arqBucket.read(ba);
+                bucket.fromByteArray(ba);
+                System.out.println(bucket.imprimir(pos));
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao imprimir estrutura Hash: "+e.getMessage());
+        }    
     }
 }

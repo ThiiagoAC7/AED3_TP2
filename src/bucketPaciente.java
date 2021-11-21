@@ -28,6 +28,7 @@ public class bucketPaciente implements RegistroHash<bucketPaciente> {
         return this.end;
     }
 
+    @Override
     public String toString(){
         return "ID: "+this.id+" END: "+this.end;
     }
