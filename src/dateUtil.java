@@ -37,7 +37,7 @@ class dateUtil {
      * @param strData Data informada pelo usuario
      * @return true caso data estiver em formato certo
      */
-    boolean ValidaData(String strData) {
+    public static boolean validaData(String strData) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         try {
              formatter.parse(strData);

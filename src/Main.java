@@ -34,9 +34,19 @@ public class Main{
                         String nome1 = in.nextLine();
                         System.out.print("\n");
                         //ler data de nascimento
-                        System.out.print("DataDeNascimento: ");
-                        String strData1 = in.nextLine();
-                        Date dataDeNascimento1 = dateUtil.stringToDate(strData1);
+                        String strData1;
+                        boolean formatado = false;
+                        Date dataDeNascimento1 = new Date();
+                        do{
+                            System.out.print("DataDeNascimento: ");
+                            strData1 = in.nextLine();
+                            formatado = dateUtil.validaData(strData1);
+                            if(formatado==true) {
+                                dataDeNascimento1 = dateUtil.stringToDate(strData1);
+                            } else {
+                                System.out.println("Data Inválida!!!");
+                            }                   
+                        } while(formatado==false);
                         System.out.print("\n");
                         //ler sexo
                         System.out.print("Sexo(M/F).......: ");
