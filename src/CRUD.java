@@ -231,8 +231,5 @@ public class CRUD<T extends Registro> {
 
     }
 
-	public void imprimir(){
-		hashExt.imprimir();
-	}
 
 }

@@ -8,7 +8,7 @@ public class bucketPaciente implements RegistroHash<bucketPaciente> {
 
     private int id;
     private long end;
-    private final short TAM = 30; // ?
+    private final short TAM = 30;
 
     public bucketPaciente(){
         this(-1,0);

@@ -48,6 +48,9 @@ class dateUtil {
         }
     }
 
+    /**
+     * Retorna tempo atual
+     */
     public static long now() {
         return new Date().getTime();
     }
