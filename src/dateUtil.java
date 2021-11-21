@@ -25,7 +25,7 @@ class dateUtil {
         try{
             data = formatter.parse(strData);            
         } catch(Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Data Inválida ! digite no formato [dd/MM/yyyy] "+e.getMessage());
         }
 
         return data;
