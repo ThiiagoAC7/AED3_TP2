@@ -49,7 +49,8 @@ class dateUtil {
     }
 
     /**
-     * Retorna tempo atual
+     * Calcula o tempo de execução
+     * @return tempo de execução em milisegundos
      */
     public static long now() {
         return new Date().getTime();
