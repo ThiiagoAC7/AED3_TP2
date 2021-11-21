@@ -1,5 +1,6 @@
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 class dateUtil {
 
@@ -30,5 +31,21 @@ class dateUtil {
 
         return data;
     }
+
+    /**
+     * Validação do formato de data [dd/MM/yyyy]
+     * @param strData Data informada pelo usuario
+     * @return true caso data estiver em formato certo
+     */
+    boolean ValidaData(String strData) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+             formatter.parse(strData);
+             return true;
+        }
+        catch(ParseException e){
+             return false;
+        }
+   }
 
 }
