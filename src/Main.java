@@ -14,7 +14,7 @@ public class Main{
             crud = new CRUD<>(Paciente.class.getConstructor());
             Scanner in = new Scanner(System.in);
             int menu;
-            final int k = 4000;
+            final int k = 4000000;
 
             do{
                 System.out.println("\n1- Inserir Ficha de Paciente");
@@ -186,7 +186,7 @@ public class Main{
                             String nomeTmp = "Nome" + i + " Sobrenome" + i + " Sobrenome" + i;
                             Date dataDeNascimentoTmp = new GregorianCalendar(2021, Calendar.JANUARY, i%12).getTime();
                             char sexoTmp = (i%2 == 0) ? 'M' : 'F';
-                            String anotacoesTmp = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+                            String anotacoesTmp = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,";
 
                             //cria objeto paciente
                             p[i] = new Paciente(-1, nomeTmp, dataDeNascimentoTmp, sexoTmp, anotacoesTmp);
