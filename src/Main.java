@@ -14,7 +14,7 @@ public class Main{
             crud = new CRUD<>(Paciente.class.getConstructor());
             Scanner in = new Scanner(System.in);
             int menu;
-            final int k = 4000000;
+            final int k = 4000;
 
             do{
                 System.out.println("\n1- Inserir Ficha de Paciente");
@@ -215,8 +215,8 @@ public class Main{
                         }
 
                         System.out.println("------------------------------------------------Resultados------------------------------------------------");
-                        System.out.println("Tempo de Execução das Inserções: " + tempoTotalCreate + "ms");
-                        System.out.println("Tempo de Execução das Pesquisas: " + tempoTotalRead + "ms");
+                        System.out.println("Tempo de Execução das Inserções: " + (tempoTotalCreate*1000)/60000 + "m");
+                        System.out.println("Tempo de Execução das Pesquisas: " + (tempoTotalRead*1000)/60000 + "m");
 
                         break;
                     //Sair
