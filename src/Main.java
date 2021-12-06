@@ -1,5 +1,7 @@
 import java.util.Scanner;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Main{
     /**
@@ -12,6 +14,7 @@ public class Main{
             crud = new CRUD<>(Paciente.class.getConstructor());
             Scanner in = new Scanner(System.in);
             int menu;
+            final int k = 4000;
 
             do{
                 System.out.println("\n1- Inserir Ficha de Paciente");
@@ -19,6 +22,7 @@ public class Main{
                 System.out.println("3- Atualizar Ficha de Paciente");
                 System.out.println("4- Deletar Ficha de Paciente");
                 System.out.println("5- Imprimir Arquivos");
+                System.out.println("6- Rodar Simulação");
                 System.out.println("0- Sair\n");
                 System.out.print("Opção: ");
                 menu = in.nextInt();
@@ -171,6 +175,49 @@ public class Main{
                     case 5:
                         //função ler todos os paciente do CRUD
                         crud.readAll();
+                        break;
+                    //Simulação
+                    case 6:
+                        long tempoTotalCreate = 0;
+                        long tempoTotalRead = 0;
+                        Paciente[] p = new Paciente[k];
+
+                        for(int i = 0; i < k; i++) {
+                            String nomeTmp = "Nome" + i + " Sobrenome" + i + " Sobrenome" + i;
+                            Date dataDeNascimentoTmp = new GregorianCalendar(2021, Calendar.JANUARY, i%12).getTime();
+                            char sexoTmp = (i%2 == 0) ? 'M' : 'F';
+                            String anotacoesTmp = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+
+                            //cria objeto paciente
+                            p[i] = new Paciente(-1, nomeTmp, dataDeNascimentoTmp, sexoTmp, anotacoesTmp);
+                        }
+
+                        for(int i = 0; i < k; i++) {
+                            //inicia medidor de tempo
+                            long inicioCreateTmp = dateUtil.now();
+                            //função inserir do CRUD passando o novo paciente como parâmetro
+                            crud.create(p[i]);
+                            //finaliza medidor de tempo
+                            long fimCreateTmp = dateUtil.now();
+                            //armazena o intervalo de tempo da função create()
+                            tempoTotalCreate += (fimCreateTmp-inicioCreateTmp);
+                        }
+
+                        for(int i = 0; i < k; i++) {
+                            //inicia medidor de tempo
+                            long inicioReadTmp = dateUtil.now();
+                            //função inserir do CRUD passando o novo paciente como parâmetro
+                            crud.read(i);
+                            //finaliza medidor de tempo
+                            long fimReadTmp = dateUtil.now();
+                            //armazena o intervalo de tempo da função read()
+                            tempoTotalRead += (fimReadTmp-inicioReadTmp);
+                        }
+
+                        System.out.println("------------------------------------------------Resultados------------------------------------------------");
+                        System.out.println("Tempo de Execução das Inserções: " + tempoTotalCreate + "ms");
+                        System.out.println("Tempo de Execução das Pesquisas: " + tempoTotalRead + "ms");
+
                         break;
                     //Sair
                     case 0: 
