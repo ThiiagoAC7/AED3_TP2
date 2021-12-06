@@ -14,7 +14,7 @@ public class Main{
             crud = new CRUD<>(Paciente.class.getConstructor());
             Scanner in = new Scanner(System.in);
             int menu;
-            final int k = 4000;
+            final int k = 4000000;
 
             do{
                 System.out.println("\n1- Inserir Ficha de Paciente");
